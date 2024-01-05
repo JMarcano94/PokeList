@@ -1,20 +1,16 @@
-import {ImageBackground, View} from 'react-native';
-import {styles} from './src/common/styles/CardStyle';
-import {PokemonList} from './src/common/components/PokemonFunction';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
-const backgroundImageUrl = process.env.BACKGROUND_IMAGE_URL;
+import {ListScreen} from './src/main/listScreen';
+const Stack = createStackNavigator();
 
 const App = () => {
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        source={{uri: backgroundImageUrl}}
-        style={styles.background}
-      />
-      <View style={styles.absoluteView}>
-        <PokemonList />
-      </View>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Pokemon List" component={ListScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

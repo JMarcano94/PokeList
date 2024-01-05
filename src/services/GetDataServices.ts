@@ -1,26 +1,16 @@
 import axios from 'axios';
 import {useEffect, useState} from 'react';
-import {FlatList} from 'react-native';
-import {PokemonItem} from './PokemonList';
+import {Pokemon, Stats} from '../models/PokemonInterface';
 
-interface Pokemon {
-  sprites: any;
-  type: any;
-  types: any;
-  name: string;
-  url: string;
-  height: number;
-  weight: number;
-  stats: any[];
-}
-
-export const PokemonList = () => {
+export const usePokemonData = () => {
   const [pokemonData, setPokemonData] = useState<Pokemon[]>([]);
   const [page, setPage] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchData = async (pageNumber: number) => {
     setLoading(true);
+    setError(null);
     try {
       const response = await axios.get(
         `https://pokeapi.co/api/v2/pokemon?limit=20&offset=${
@@ -36,8 +26,9 @@ export const PokemonList = () => {
       );
       setPokemonData(prevData => [...prevData, ...updatedPokemonData]);
       setPage(prevPage => prevPage + 1);
-    } catch (error) {
-      console.error(error);
+    } catch (catchError) {
+      setError('Hubo un error al obtener los datos de Pokémon.');
+      console.error(catchError);
     } finally {
       setLoading(false);
     }
@@ -47,13 +38,19 @@ export const PokemonList = () => {
     fetchData(page);
   }, [page]);
 
-  return (
-    <FlatList
-      data={pokemonData}
-      keyExtractor={(item, index) => index.toString()}
-      renderItem={({item}) => <PokemonItem item={item} />}
-      onEndReached={() => !loading && fetchData(page)}
-      onEndReachedThreshold={0.5}
-    />
-  );
+  return {pokemonData, loading, error};
+};
+
+export const formatStats = (stats: Stats[]): Stats[] => {
+  const orderedStats: Stats[] = [];
+  const statNames = ['hp', 'attack', 'defense', 'speed'];
+
+  statNames.forEach(name => {
+    const stat = stats.find(s => s.stat.name === name);
+    if (stat) {
+      orderedStats.push(stat);
+    }
+  });
+
+  return orderedStats;
 };

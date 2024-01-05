@@ -1,48 +1,18 @@
 import {memo} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {styles} from '../styles/CardStyle';
+import {formatStats, usePokemonData} from '../../services/GetDataServices';
+import {Pokemon, Stats} from '../../models/PokemonInterface';
 
-interface Pokemon {
-  sprites: any;
-  type: any;
-  types: any;
-  name: string;
-  url: string;
-  height: number;
-  weight: number;
-  stats: Stats[];
-}
-interface Stats {
-  stat: string;
-  hp: number;
-  attack: number;
-  defense: number;
-  specialAttack: number;
-  specialDefense: number;
-  speed: number;
-}
-const PokemonStats = ({stats}: {stats: Pokemon['stats']}) => {
-  const reorderedStats = [
-    'hp',
-    'attack',
-    'defense',
-    'speed',
-    'specialAttack',
-    'specialDefense',
-  ];
-
-  const sortedStats = stats.sort((a, b) => {
-    const indexA = reorderedStats.indexOf(b.stat);
-    const indexB = reorderedStats.indexOf(a.stat);
-    return indexA - indexB;
-  });
+export const PokemonStats = ({stats}: {stats: Stats[]}) => {
+  const orderedStats = formatStats(stats);
 
   return (
     <View>
       <Text style={styles.subtitle}>Stats</Text>
-      {sortedStats.map((stat: any, index: any) => (
-        <View key={index.toString()}>
+      {orderedStats.map((stat: Stats, index: number) => (
+        <View key={`${stat.stat.name}-${index}`}>
           <Text style={styles.rowContent}>
             {stat.stat.name}: {stat.base_stat}
           </Text>
@@ -51,12 +21,13 @@ const PokemonStats = ({stats}: {stats: Pokemon['stats']}) => {
     </View>
   );
 };
+
 const PokemonTypes = ({types}: {types: Pokemon['types']}) => {
   return (
     <View>
       <Text style={styles.subtitle}>Types</Text>
       {types.map((type: any, index: any) => (
-        <View key={index.toString()}>
+        <View key={`${type.type.name}-${index}`}>
           <Text style={styles.rowContent}>{type.type.name}</Text>
         </View>
       ))}
@@ -98,3 +69,15 @@ export const PokemonItem = memo(({item}: {item: Pokemon}) => {
     </View>
   );
 });
+
+export const PokemonList = () => {
+  const {pokemonData} = usePokemonData(); // Accede directamente a pokemonData
+
+  return (
+    <FlatList
+      data={pokemonData} // Usa pokemonData directamente
+      renderItem={({item}) => <PokemonItem item={item} />}
+      keyExtractor={(item, index) => item.name + index}
+    />
+  );
+};
