@@ -2,10 +2,10 @@ import {memo} from 'react';
 import {View, Text, FlatList} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {styles} from '../styles/CardStyle';
-import {formatStats, usePokemonData} from '../../services/GetDataServices';
+import {formatStats, usePokemonData} from '../../customHooks/GetDataHooks';
 import {Pokemon, Stats} from '../../models/PokemonInterface';
 
-export const PokemonStats = ({stats}: {stats: Stats[]}) => {
+export const PokemonStats = memo(({stats}: {stats: Stats[]}) => {
   const orderedStats = formatStats(stats);
 
   return (
@@ -20,9 +20,9 @@ export const PokemonStats = ({stats}: {stats: Stats[]}) => {
       ))}
     </View>
   );
-};
+});
 
-const PokemonTypes = ({types}: {types: Pokemon['types']}) => {
+const PokemonTypes = memo(({types}: {types: Pokemon['types']}) => {
   return (
     <View>
       <Text style={styles.subtitle}>Types</Text>
@@ -33,8 +33,9 @@ const PokemonTypes = ({types}: {types: Pokemon['types']}) => {
       ))}
     </View>
   );
-};
-const PokemonImage = ({sprites}: {sprites: Pokemon['sprites']}) => {
+});
+
+const PokemonImage = memo(({sprites}: {sprites: Pokemon['sprites']}) => {
   return (
     <View>
       <FastImage
@@ -47,15 +48,15 @@ const PokemonImage = ({sprites}: {sprites: Pokemon['sprites']}) => {
       />
     </View>
   );
-};
+});
 
-const PokemonName = ({name}: {name: Pokemon['name']}) => {
+const PokemonName = memo(({name}: {name: Pokemon['name']}) => {
   return (
     <View>
       <Text style={styles.title}>{name.toUpperCase()}</Text>
     </View>
   );
-};
+});
 
 export const PokemonItem = memo(({item}: {item: Pokemon}) => {
   return (
@@ -78,6 +79,9 @@ export const PokemonList = () => {
       data={pokemonData} // Usa pokemonData directamente
       renderItem={({item}) => <PokemonItem item={item} />}
       keyExtractor={(item, index) => item.name + index}
+      initialNumToRender={10}
+      windowSize={10}
+      removeClippedSubviews
     />
   );
 };
