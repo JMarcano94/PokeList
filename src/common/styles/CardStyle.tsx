@@ -22,9 +22,11 @@ export const styles = StyleSheet.create({
   rowContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 2,
     marginLeft: 10,
+    marginTop: 10,
     fontSize: 16,
+    textAlign: 'left',
     fontWeight: 'bold',
   },
   title: {
@@ -33,11 +35,19 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     flex: 1,
   },
-  subtitle: {
+  subtitle1: {
     justifyContent: 'space-between',
     fontWeight: 'bold',
     fontSize: 24,
-    textAlign: 'center',
+    textAlign: 'left',
+    marginLeft: 10,
+  },
+  subtitle2: {
+    justifyContent: 'space-between',
+    fontWeight: 'bold',
+    fontSize: 24,
+    textAlign: 'left',
+    marginLeft: 10,
   },
   container: {
     flex: 1,

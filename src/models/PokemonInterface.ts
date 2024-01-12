@@ -1,11 +1,9 @@
 export interface Pokemon {
   sprites: any;
-  type: any;
-  types: any;
   name: string;
   url: string;
-  height: number;
-  weight: number;
+  type: string;
+  types: any[];
   stats: Stats[];
 }
 
@@ -20,4 +18,11 @@ export interface Stats {
   specialAttack: number;
   specialDefense: number;
   speed: number;
+}
+
+export interface PokemonApiResponse {
+  count: number;
+  next: string;
+  previous: string;
+  stats: Stats[];
 }
