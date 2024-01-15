@@ -54,7 +54,7 @@ export class AxiosServices {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE',
     url: string,
     data?: any,
-  ): Promise<PokemonResponse> {
+  ): Promise<PokemonResponse | AxiosError<unknown, any>> {
     try {
       const response = await axios({
         method,

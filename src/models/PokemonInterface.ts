@@ -1,5 +1,5 @@
 export interface Pokemon {
-  sprites: any;
+  sprite: string;
   name: string;
   url: string;
   type: string;
@@ -25,4 +25,18 @@ export interface PokemonApiResponse {
   next: string;
   previous: string;
   stats: Stats[];
+}
+
+export interface PokemonDataContextProps {
+  children: React.ReactNode;
+}
+
+export interface PokemonDataContextValue {
+  pokemonData: Pokemon[];
+  isLoadingMore: boolean;
+  fetchMore: () => void;
+}
+
+export interface PokemonCardProps {
+  item: Pokemon;
 }

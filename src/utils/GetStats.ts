@@ -1,21 +1,21 @@
 import {useCallback} from 'react';
 import {Pokemon} from '../models/PokemonInterface';
 import {AxiosServices, PokemonResponse} from '../services/AxiosServices';
+import {AxiosError} from 'axios';
 
 export const useGetPokemonStats = () => {
-  const axiosService = new AxiosServices();
-
   const getPokemonStats = useCallback(async (pokemon: Pokemon) => {
+    const axiosService = new AxiosServices();
     try {
-      const response: PokemonResponse = await axiosService.get(pokemon.url);
+      const response = await axiosService.get(pokemon.url);
       if (response && 'data' in response) {
-        return response.data;
+        return response.data as PokemonResponse;
       } else {
         console.error('La respuesta de axiosService no contiene datos.');
         return null;
       }
     } catch (err: unknown) {
-      console.error((err as Error).message);
+      console.error((err as AxiosError).message);
       return null;
     }
   }, []);

@@ -1,11 +1,11 @@
 import {FlatList} from 'react-native';
-import {GetPokemonData} from '../../customHooks/GetDataHooks';
+import {usePokemonData} from '../../customHooks/GetDataHooks';
 import {PokemonCard} from './infoCard/PokemonCard';
 import {Pokemon} from '../../models/PokemonInterface';
 import {FooterComponent} from './FooterComponent';
 
 export const PokemonList = () => {
-  const {pokemonData, fetchMore, isLoadingMore} = GetPokemonData();
+  const {pokemonData, fetchMore, isLoadingMore} = usePokemonData();
   return (
     <FlatList
       data={pokemonData}

@@ -1,6 +1,5 @@
 import {Text, View} from 'react-native';
 import {styles} from '../../styles/CardStyle';
-
 export const PokemonStats = ({stats}: {stats: any[]}) => {
   const order = [
     'hp',
@@ -10,9 +9,12 @@ export const PokemonStats = ({stats}: {stats: any[]}) => {
     'special-attack',
     'special-defense',
   ];
-  const orderedStats = stats.sort(
-    (a, b) => order.indexOf(a.stat.name) - order.indexOf(b.stat.name),
-  );
+  let orderedStats = [];
+  if (stats) {
+    orderedStats = stats.sort(
+      (a, b) => order.indexOf(a.stat.name) - order.indexOf(b.stat.name),
+    );
+  }
 
   return (
     <View>
